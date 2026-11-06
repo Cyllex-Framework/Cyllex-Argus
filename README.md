@@ -2,13 +2,7 @@
   <img src="docs/brand/argus-banner.png" alt="Cyllex Argus" width="480">
 </p>
 
-# Cyllex Argus
-
 **AI-powered adversary intelligence for purple teams.**
-
-<p align="center">
-  <img src="docs/images/argus-investigation.png" alt="An Argus investigation: the agent pipeline trace, ATT&CK mapping and quote-backed facts" width="920">
-</p>
 
 Argus investigates a threat across the web, your RSS feeds and documents you supply, extracts
 quote-backed claims with an LLM, consolidates them into confidence-scored assessments mapped to
@@ -26,6 +20,11 @@ MITRE ATT&CK, and lets a human review every step. It runs entirely on your own m
 - **Mapped to MITRE ATT&CK**, with exports to Markdown, STIX 2.1 and Sigma rules, every one
   TLP-aware and honest about the documents it could not read.
 - **Every pipeline decision is traced**: what each agent decided, the token cost and the timings.
+
+<p align="center">
+  <img src="docs/images/argus-investigation.png" alt="An Argus investigation: the agent pipeline trace, ATT&CK mapping and quote-backed facts" width="920">
+</p>
+
 
 ## Architecture
 
