@@ -1,0 +1,41 @@
+[Unit]
+# systemd unit template for `argus serve` on Linux. Edit the paths and User= to match your
+# install, then: `sudo cp argus.service /etc/systemd/system/ && sudo systemctl daemon-reload
+# && sudo systemctl enable --now argus`. The scheduler thread lives inside `argus serve`, so
+# recurring investigations and the keep-alive health picture both depend on this unit staying
+# up.
+Description=Cyllex Argus — AI-powered adversary intelligence
+Documentation=https://github.com/Cyllex-Framework/Cyllex-Argus
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=argus
+Group=argus
+# Point WorkingDirectory at the operator's checkout (if running from source) or at any dir the
+# User= has read access to. `argus serve` does not read anything from CWD.
+WorkingDirectory=/opt/argus
+# ARGUS_HOME is where argus.toml, argus.db, backups, and raw document copies live. Default is
+# ~/.cyllex-argus for the User= account; override here if you want a dedicated path.
+Environment=ARGUS_HOME=/var/lib/argus
+# Admin login via env so no plaintext hash lands in argus.toml. Put the password in a file
+# only root can read (`chmod 600`), load it with EnvironmentFile.
+EnvironmentFile=/etc/argus/env
+# `--host 127.0.0.1` keeps the port loopback-only; put nginx/caddy in front with TLS to accept
+# LAN/WAN. `--session-ttl 0` disables the default 7-day session expiry for a long-lived daemon;
+# the admin login still gates the UI. Drop it to keep the 7-day expiry.
+ExecStart=/opt/argus/.venv/bin/argus serve --host 127.0.0.1 --no-browser --session-ttl 0
+
+# Safety: don't let a crash loop eat the CPU.
+Restart=on-failure
+RestartSec=5s
+# Standard hardening — the service touches only its own files and does not need extra caps.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/argus /opt/argus
+
+[Install]
+WantedBy=multi-user.target

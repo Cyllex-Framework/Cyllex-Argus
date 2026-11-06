@@ -1,0 +1,31 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+dist/
+*.egg-info/
+node_modules/
+
+# Agent worktrees, SDD workspaces, and local CLI output
+.claude/
+.superpowers/
+
+# Internal development artifacts (plans, specs, mockups) — not product docs
+docs/superpowers/
+docs/mockups/
+
+# Local config, secrets, and databases — never commit these
+.env
+argus.toml
+*.db
+*.sqlite
+*.sqlite3
+
+# Editor / OS cruft
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

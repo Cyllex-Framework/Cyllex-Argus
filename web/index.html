@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Favicon ships as the same 3-file set Cyllex uses, so the tab icon matches the parent
+         framework the operator is already looking at. Precedence: SVG (none; dropped on purpose
+         to let the raster win), ICO as the shortcut-icon fallback, PNG as the primary. -->
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyllex Argus - AI-powered adversary intelligence</title>
+    <style>
+      html,
+      body {
+        background-color: #1a1a1e;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white min-h-screen themed">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

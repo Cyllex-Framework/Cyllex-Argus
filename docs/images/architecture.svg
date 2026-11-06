@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 380" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Argus architecture. The Collector (web search, RSS feeds, local documents) feeds an LLM pipeline of Triage, Analyst and Validator. The Validator writes to a local SQLite store of entities, claims, assessments and an audit trail. The store produces outputs: Markdown, STIX 2.1, Sigma rules and a TAXII 2.1 feed.">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7589"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1080" height="380" rx="18" fill="#0f131c"/>
+
+  <!-- ===== COLLECTOR ===== -->
+  <rect x="28" y="60" width="228" height="300" rx="14" fill="#161b27" stroke="#2a3346"/>
+  <text x="46" y="90" font-size="12.5" font-weight="700" letter-spacing="1.6" fill="#7f8aa3">COLLECTOR</text>
+  <g>
+    <rect x="46" y="104" width="192" height="60" rx="9" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="62" y="130" font-size="14" font-weight="600" fill="#e6e9f0">Web search</text>
+    <text x="62" y="150" font-size="10.5" fill="#8b93a7">Claude WebSearch</text>
+    <rect x="46" y="176" width="192" height="60" rx="9" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="62" y="202" font-size="14" font-weight="600" fill="#e6e9f0">RSS feeds</text>
+    <text x="62" y="222" font-size="10.5" fill="#8b93a7">your configured sources</text>
+    <rect x="46" y="248" width="192" height="60" rx="9" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="62" y="274" font-size="14" font-weight="600" fill="#e6e9f0">Local documents</text>
+    <text x="62" y="294" font-size="10.5" fill="#8b93a7">PDF / HTML / TXT ingest</text>
+  </g>
+
+  <line x1="258" y1="210" x2="282" y2="210" stroke="#6b7589" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ===== LLM PIPELINE ===== -->
+  <rect x="284" y="60" width="244" height="300" rx="14" fill="#161b27" stroke="#2a3346"/>
+  <text x="302" y="90" font-size="12.5" font-weight="700" letter-spacing="1.6" fill="#7f8aa3">LLM PIPELINE</text>
+  <g>
+    <rect x="302" y="104" width="208" height="60" rx="9" fill="#2a2212" stroke="#b5863f"/>
+    <text x="318" y="130" font-size="14" font-weight="600" fill="#f3d9a8">Triage</text>
+    <text x="318" y="150" font-size="10.5" fill="#c9b184">is this document on topic?</text>
+    <rect x="302" y="176" width="208" height="60" rx="9" fill="#2a2212" stroke="#b5863f"/>
+    <text x="318" y="202" font-size="14" font-weight="600" fill="#f3d9a8">Analyst</text>
+    <text x="318" y="222" font-size="10.5" fill="#c9b184">extract quote-backed claims</text>
+    <rect x="302" y="248" width="208" height="60" rx="9" fill="#10261c" stroke="#2f9168"/>
+    <text x="318" y="274" font-size="14" font-weight="600" fill="#9fe3c2">Validator</text>
+    <text x="318" y="294" font-size="10.5" fill="#86c3a5">verify quote, resolve, score</text>
+  </g>
+  <text x="406" y="336" text-anchor="middle" font-size="10" fill="#6b7589">amber: reasons with a model  ·  green: plain code</text>
+
+  <line x1="530" y1="210" x2="554" y2="210" stroke="#6b7589" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ===== STORE ===== -->
+  <rect x="556" y="60" width="226" height="300" rx="14" fill="#161b27" stroke="#2a3346"/>
+  <text x="574" y="90" font-size="12.5" font-weight="700" letter-spacing="1.6" fill="#7f8aa3">STORE</text>
+  <text x="757" y="90" font-size="10.5" fill="#6b7589" text-anchor="end">SQLite</text>
+  <g font-size="13">
+    <rect x="574" y="104" width="190" height="46" rx="8" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="590" y="132" font-weight="600" fill="#e6e9f0">entities / aliases</text>
+    <rect x="574" y="160" width="190" height="46" rx="8" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="590" y="188" font-weight="600" fill="#e6e9f0">claims <tspan font-size="10.5" fill="#8b93a7">+ quote + span</tspan></text>
+    <rect x="574" y="216" width="190" height="46" rx="8" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="590" y="244" font-weight="600" fill="#e6e9f0">assessments <tspan font-size="10.5" fill="#8b93a7">scored</tspan></text>
+    <rect x="574" y="272" width="190" height="46" rx="8" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="590" y="300" font-weight="600" fill="#e6e9f0">pipeline_events <tspan font-size="10.5" fill="#8b93a7">audit</tspan></text>
+  </g>
+
+  <line x1="784" y1="210" x2="808" y2="210" stroke="#6b7589" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ===== OUTPUTS ===== -->
+  <rect x="810" y="60" width="242" height="300" rx="14" fill="#161b27" stroke="#2a3346"/>
+  <text x="828" y="90" font-size="12.5" font-weight="700" letter-spacing="1.6" fill="#7f8aa3">OUTPUTS</text>
+  <g font-size="13" font-weight="600">
+    <rect x="828" y="104" width="206" height="38" rx="8" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="844" y="128" fill="#e6e9f0">Markdown</text>
+    <rect x="828" y="150" width="206" height="38" rx="8" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="844" y="174" fill="#e6e9f0">STIX 2.1</text>
+    <rect x="828" y="196" width="206" height="38" rx="8" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="844" y="220" fill="#e6e9f0">Sigma rules</text>
+    <rect x="828" y="242" width="206" height="38" rx="8" fill="#1d2433" stroke="#2f3a4f"/>
+    <text x="844" y="266" fill="#e6e9f0">TAXII 2.1 feed</text>
+  </g>
+</svg>

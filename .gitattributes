@@ -1,0 +1,6 @@
+web/src/styles/vendor/*.css -text
+
+# The committed web bundle is build output, not source. Treat it as binary so core.autocrlf
+# never rewrites its line endings — that rewriting is what made `git status` see a "change" in
+# index.html on a fresh checkout and muddied every bundle diff.
+src/cyllex_argus/web/static/** -text

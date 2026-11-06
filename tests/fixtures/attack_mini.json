@@ -1,0 +1,80 @@
+{
+  "type": "bundle",
+  "id": "bundle--00000000-0000-4000-8000-000000000000",
+  "objects": [
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-4000-8000-000000001566",
+      "name": "Phishing",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1566"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-4000-8000-000015660004",
+      "name": "Spearphishing Voice",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1566.004"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-4000-8000-000000009999",
+      "name": "Old Technique",
+      "revoked": true,
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T9999"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-4000-8000-000000008888",
+      "name": "Deprecated Technique",
+      "x_mitre_deprecated": true,
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T8888"}]
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-4000-8000-000000000001",
+      "relationship_type": "revoked-by",
+      "source_ref": "attack-pattern--00000000-0000-4000-8000-000000009999",
+      "target_ref": "attack-pattern--00000000-0000-4000-8000-000000001566"
+    },
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--00000000-0000-4000-8000-000000001015",
+      "name": "Scattered Spider",
+      "aliases": ["Scattered Spider", "Roasted 0ktapus", "Octo Tempest", "Storm-0875", "UNC3944"],
+      "external_references": [{"source_name": "mitre-attack", "external_id": "G1015"}]
+    },
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--00000000-0000-4000-8000-00000000dead",
+      "name": "Revoked Group",
+      "revoked": true
+    },
+    {
+      "type": "malware",
+      "id": "malware--00000000-0000-4000-8000-000000001068",
+      "name": "BlackCat",
+      "x_mitre_aliases": ["BlackCat", "ALPHV", "Noberus"],
+      "external_references": [{"source_name": "mitre-attack", "external_id": "S1068"}]
+    },
+    {
+      "type": "tool",
+      "id": "tool--00000000-0000-4000-8000-000000001040",
+      "name": "Rclone",
+      "x_mitre_aliases": ["Rclone"],
+      "external_references": [{"source_name": "mitre-attack", "external_id": "S1040"}]
+    },
+    {
+      "type": "campaign",
+      "id": "campaign--00000000-0000-4000-8000-000000000027",
+      "name": "C0027",
+      "aliases": ["C0027", "Scattered Spider CRM Campaign"],
+      "external_references": [{"source_name": "mitre-attack", "external_id": "C0027"}]
+    },
+    {
+      "type": "campaign",
+      "id": "campaign--00000000-0000-4000-8000-00000000dead",
+      "name": "Old Campaign",
+      "revoked": true,
+      "external_references": [{"source_name": "mitre-attack", "external_id": "C9999"}]
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+name: ci
+
+# Every push and every pull request on the branches that matter. This was manual-only while the
+# project was pre-polish, and the cost of that showed: `dev` spent days unable to build for
+# anyone but its author (a committed import of an untracked file), and tests kept the old product
+# name long after the rename. Ninety seconds per push buys back both.
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Set up Python 3.13
+        run: uv python install 3.13
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Lint (ruff)
+        # ruff is kept out of the locked dev deps so the regular `uv sync --frozen` does not
+        # need a lockfile churn for a lint-only tool. `--with` installs it ephemerally for
+        # just this step. Pinned: an unpinned `ruff>=0.14` turns every new rule in a new
+        # release into a red build on a branch nobody touched.
+        run: uv run --with 'ruff==0.16.*' ruff check src tests
+
+      - name: Tests (pytest, excluding e2e)
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: uv run pytest --ignore=tests/e2e -q
+
+  # The pipeline's concurrency defects did not crash — they produced wrong intelligence, and the
+  # test that caught them failed 2 runs in 12. A single pass of a probabilistic test proves
+  # nothing, so these run until they have had a real chance to fail. Separate job: it is the
+  # slowest thing here and it must not delay the feedback above.
+  concurrency-stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Set up Python 3.13
+        run: uv python install 3.13
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Repeat the concurrency suites
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          for i in $(seq 1 15); do
+            echo "::group::round $i"
+            uv run pytest tests/pipeline/test_concurrency.py tests/knowledge/test_store_threads.py -q -p no:randomly
+            echo "::endgroup::"
+          done
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Vitest
+        run: npm test -- --run
+
+      - name: Build the Vite bundle (verifies TypeScript + bundling)
+        run: npm run build
+
+      # The committed bundle under src/cyllex_argus/web/static is what `argus serve` ships, so the
+      # build above must SUCCEED — a frontend commit that breaks tsc or bundling is caught here,
+      # which is the failure that once left `dev` unbuildable for everyone but its author.
+      #
+      # What this job deliberately does NOT do any more is assert the committed bundle is
+      # byte-identical to the one just built. The bundler (rolldown, a native Rust binary)
+      # produces different output on Linux than on Windows even from the identical locked
+      # toolchain — measured: the same `npm ci && npm run build` yields index-DZSBQvMe.js on
+      # Windows and index-Ac0YfP2E.js here. So a byte-exact check can never pass for a bundle a
+      # Windows developer committed, and a CI step that is red on every single run is worse than
+      # no step: it trains everyone to ignore the red. Keeping the committed bundle current is
+      # enforced by convention (rebuild before committing a frontend change), until the day the
+      # bundle is produced by CI itself rather than committed.
