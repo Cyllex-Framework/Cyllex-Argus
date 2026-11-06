@@ -265,3 +265,17 @@ def test_usage_sums_a_mid_call_model_fallback():
     assert usage.output_tokens == 95
     assert usage.model == "claude-sonnet-5-5"
 
+
+def test_subscription_cost_basis_none_suppresses_pricing_but_keeps_tokens():
+    """A Pro/Max subscription bills no tokens, so an operator may want the money column empty.
+    Tokens, model and duration must survive that choice; only pricing is turned off."""
+    stdout = _success_with(usage=_REAL_CLI_USAGE, model_usage=_REAL_CLI_MODEL_USAGE, model=None)
+    usage = _provider(stdout=stdout, subscription_cost_basis="none").complete_json(REQUEST, Answer).usage
+    assert usage.price_from_table is False
+    assert usage.input_tokens == 2 + 1517 + 649      # correction is unconditional
+    assert usage.model == "claude-opus-5-5"          # so is the real model id
+
+
+def test_subscription_cost_basis_defaults_to_list():
+    stdout = _success_with(usage=_REAL_CLI_USAGE, model_usage=_REAL_CLI_MODEL_USAGE, model=None)
+    assert _provider(stdout=stdout).complete_json(REQUEST, Answer).usage.price_from_table is True

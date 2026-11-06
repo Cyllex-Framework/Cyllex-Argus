@@ -159,7 +159,13 @@ class ClaudeCodeCLIProvider:
         A mid-call model fallback (limits, `fallback_credit`) yields several `modelUsage` keys;
         tokens are summed across them and the row is labelled with whichever produced the most
         output, since that is the one that did the work.
+
+        Correcting the tokens and the model id is unconditional: both were simply wrong. Whether
+        the trace then prices the call is the operator's choice, because this provider runs on a
+        flat-rate subscription where a per-token figure is notional. See
+        `[llm] subscription_cost_basis`.
         """
+        priceable = self._cfg.subscription_cost_basis != "none"
         model_usage = data.get("modelUsage")
         if isinstance(model_usage, dict) and model_usage:
             buckets = [(k, v) for k, v in model_usage.items() if isinstance(v, dict)]
@@ -185,7 +191,7 @@ class ClaudeCodeCLIProvider:
                     return LLMUsage(
                         input_tokens=input_tokens, output_tokens=output_tokens,
                         model=str(model), duration_ms=duration_ms,
-                        web_search_requests=searches,
+                        web_search_requests=searches, price_from_table=priceable,
                     )
 
         raw = data.get("usage") or data.get("message", {}).get("usage")
@@ -206,7 +212,7 @@ class ClaudeCodeCLIProvider:
         model = data.get("model") or data.get("message", {}).get("model") or self._cfg.model or "claude-code-cli"
         return LLMUsage(
             input_tokens=input_tokens, output_tokens=output_tokens, model=str(model),
-            duration_ms=duration_ms, web_search_requests=searches,
+            duration_ms=duration_ms, web_search_requests=searches, price_from_table=priceable,
         )
 
     @staticmethod
