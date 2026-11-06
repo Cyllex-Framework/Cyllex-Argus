@@ -1,6 +1,6 @@
 [project]
 name = "cyllex-argus"
-version = "1.0.0"
+version = "1.0.1"
 description = "Cyllex Argus: AI-powered adversary intelligence"
 readme = "README.md"
 license = "PolyForm-Noncommercial-1.0.0"
